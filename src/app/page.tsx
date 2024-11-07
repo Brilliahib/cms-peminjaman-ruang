@@ -1,5 +1,5 @@
-import HomeContent from "@/components/organisms/home/HomeContent";
+import LoginContent from "@/components/organisms/auth/login/LoginContent";
 
 export default function Home() {
-  return <HomeContent />;
+  return <LoginContent />;
 }

@@ -28,11 +28,14 @@ export function SelectRoom({ onRoomChange }: SelectRoomProps) {
       <SelectContent>
         <SelectGroup>
           <SelectLabel>Room</SelectLabel>
-          <SelectItem value="A">Ruangan A</SelectItem>
-          <SelectItem value="B">Ruangan B</SelectItem>
-          <SelectItem value="C">Ruangan C</SelectItem>
-          <SelectItem value="D">Ruangan D</SelectItem>
-          <SelectItem value="E">Ruangan E</SelectItem>
+          <SelectItem value="A">Ruangan 201</SelectItem>
+          <SelectItem value="B">Ruangan 202</SelectItem>
+          <SelectItem value="C">Ruangan 203</SelectItem>
+          <SelectItem value="D">Ruangan 204</SelectItem>
+          <SelectItem value="E">Ruangan 401</SelectItem>
+          <SelectItem value="F">Ruangan 402</SelectItem>
+          <SelectItem value="G">Ruangan 403</SelectItem>
+          <SelectItem value="H">Ruangan 404</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>
