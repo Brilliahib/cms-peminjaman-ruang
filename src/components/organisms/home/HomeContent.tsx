@@ -3,12 +3,14 @@
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
+import interactionPlugin from "@fullcalendar/interaction";
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import Navbar from "@/components/atoms/navbar/Navbar";
 import { Room } from "@/types/room/room";
 import { SelectRoom } from "@/components/atoms/select/SelectRoom";
 import { useGetAllBookingApproved } from "@/http/booking/get-all-booking-approved";
+import { useRouter } from "next/navigation";
 
 interface Event {
   title: string;
@@ -17,7 +19,7 @@ interface Event {
 }
 
 export default function HomeContent() {
-  const [selectedRoom, setSelectedRoom] = useState<Room | 1>(null);
+  const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
   const [events, setEvents] = useState<Event[]>([]);
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const { data, isPending } = useGetAllBookingApproved(
@@ -26,6 +28,7 @@ export default function HomeContent() {
       enabled: !!selectedRoom,
     }
   );
+  const router = useRouter();
 
   useEffect(() => {
     if (!data || isPending) return;
@@ -54,22 +57,33 @@ export default function HomeContent() {
     };
   }, []);
 
+  const handleSelect = () => {
+    if (selectedRoom) {
+      const roomId = selectedRoom.id;
+      router.push(`/bookings/${roomId}`);
+    } else {
+      alert("Pilih ruangan terlebih dahulu!");
+    }
+  };
+
   return (
     <>
-      <Navbar />
-      <div className="md:p-8 p-4">
+      <div className="pad-x">
         <Card>
           <CardContent className="p-6">
             <div className="py-4 md:py-6 flex justify-end">
               <SelectRoom onRoomChange={handleRoomChange} />
             </div>
             <FullCalendar
-              plugins={[dayGridPlugin, timeGridPlugin]}
+              plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
               initialView="timeGridDay"
               events={events}
               height="auto"
               slotMinTime="08:00:00"
               slotMaxTime="18:00:00"
+              selectable={true}
+              select={handleSelect}
+              dayCellClassNames={() => "cursor-pointer"}
               headerToolbar={
                 isMobile
                   ? {

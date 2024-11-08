@@ -93,6 +93,12 @@ body {
   }
 }
 
+@layer components {
+  .pad-x {
+    @apply px-4 md:px-[6%] lg:px-[8%];
+  }
+}
+
 .fc-toolbar-title {
   @apply font-semibold text-xl !important;
 }
