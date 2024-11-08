@@ -8,23 +8,39 @@ import { Card, CardContent } from "@/components/ui/card";
 import Navbar from "@/components/atoms/navbar/Navbar";
 import { Room } from "@/types/room/room";
 import { SelectRoom } from "@/components/atoms/select/SelectRoom";
+import { useGetAllBookingApproved } from "@/http/booking/get-all-booking-approved";
 
 interface Event {
   title: string;
-  date: string;
+  start: string;
+  end: string;
 }
 
 export default function HomeContent() {
-  const bookingData: Record<number, Event[]> = {
-    1: [{ title: "Praktikum", date: "2024-11-07T09:00:00" }],
-    2: [{ title: "Meeting B1", date: "2024-11-07T10:00:00" }],
-    3: [{ title: "Meeting C1", date: "2024-11-07T11:00:00" }],
-    4: [{ title: "Meeting D1", date: "2024-11-07T12:00:00" }],
-    5: [{ title: "Meeting E1", date: "2024-11-07T13:00:00" }],
-  };
-
-  const [events, setEvents] = useState<Event[]>(bookingData[1] || []);
+  const [selectedRoom, setSelectedRoom] = useState<Room | 1>(null);
+  const [events, setEvents] = useState<Event[]>([]);
   const [isMobile, setIsMobile] = useState<boolean>(false);
+  const { data, isPending } = useGetAllBookingApproved(
+    { id: selectedRoom?.id || 1 },
+    {
+      enabled: !!selectedRoom,
+    }
+  );
+
+  useEffect(() => {
+    if (!data || isPending) return;
+    const roomEvents = data.data.map((booking) => ({
+      title: booking.name,
+      start: `2024-11-07T${booking.start_time}`,
+      end: `2024-11-07T${booking.end_time}`,
+    }));
+
+    setEvents(roomEvents);
+  }, [data, isPending]);
+
+  const handleRoomChange = (room: Room) => {
+    setSelectedRoom(room);
+  };
 
   useEffect(() => {
     const checkMobile = () => {
@@ -37,10 +53,6 @@ export default function HomeContent() {
       window.removeEventListener("resize", checkMobile);
     };
   }, []);
-
-  const handleRoomChange = (room: Room) => {
-    setEvents(bookingData[room.id] || []);
-  };
 
   return (
     <>
