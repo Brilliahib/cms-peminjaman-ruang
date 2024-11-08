@@ -57,7 +57,7 @@ export default function LoginContent() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
+    <div className="flex justify-center">
       <Card className="max-w-md w-full">
         <CardHeader>
           <CardTitle className="text-center">Login</CardTitle>

@@ -21,7 +21,7 @@ export default function Navbar() {
         <Link href={"/"} className="hover:underline">
           Beranda
         </Link>
-        <Link href={"/booking"} className="hover:underline">
+        <Link href={"/bookings"} className="hover:underline">
           Persuratan
         </Link>
       </div>
