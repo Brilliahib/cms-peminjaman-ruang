@@ -15,7 +15,6 @@ interface Event {
 type Room = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I";
 
 export default function HomeContent() {
-  // Data booking per ruangan
   const bookingData: Record<Room, Event[]> = {
     A: [{ title: "Praktikum", date: "2024-11-07T09:00:00" }],
     B: [{ title: "Meeting B1", date: "2024-11-07T10:00:00" }],

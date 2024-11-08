@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "@/components/ui/toaster";
+import GlobalProvider from "@/components/organisms/GlobalProvider";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -22,7 +24,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.variable} antialiased`}>
-        <main className="font-poppins">{children}</main>
+        <GlobalProvider>
+          <main className="font-poppins">{children}</main>
+          <Toaster />
+        </GlobalProvider>
       </body>
     </html>
   );
