@@ -6,29 +6,24 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import Navbar from "@/components/atoms/navbar/Navbar";
+import { Room } from "@/types/room/room";
+import { SelectRoom } from "@/components/atoms/select/SelectRoom";
 
 interface Event {
   title: string;
   date: string;
 }
 
-type Room = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I";
-
 export default function HomeContent() {
-  const bookingData: Record<Room, Event[]> = {
-    A: [{ title: "Praktikum", date: "2024-11-07T09:00:00" }],
-    B: [{ title: "Meeting B1", date: "2024-11-07T10:00:00" }],
-    C: [{ title: "Meeting C1", date: "2024-11-07T11:00:00" }],
-    D: [{ title: "Meeting D1", date: "2024-11-07T12:00:00" }],
-    E: [{ title: "Meeting E1", date: "2024-11-07T13:00:00" }],
-    F: [{ title: "Meeting E1", date: "2024-11-07T14:00:00" }],
-    G: [{ title: "Meeting E1", date: "2024-11-07T15:00:00" }],
-    H: [{ title: "Meeting E1", date: "2024-11-07T16:00:00" }],
-    I: [{ title: "Meeting E1", date: "2024-11-07T17:00:00" }],
+  const bookingData: Record<number, Event[]> = {
+    1: [{ title: "Praktikum", date: "2024-11-07T09:00:00" }],
+    2: [{ title: "Meeting B1", date: "2024-11-07T10:00:00" }],
+    3: [{ title: "Meeting C1", date: "2024-11-07T11:00:00" }],
+    4: [{ title: "Meeting D1", date: "2024-11-07T12:00:00" }],
+    5: [{ title: "Meeting E1", date: "2024-11-07T13:00:00" }],
   };
 
-  const [events, setEvents] = useState<Event[]>(bookingData.A);
-
+  const [events, setEvents] = useState<Event[]>(bookingData[1] || []);
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
   useEffect(() => {
@@ -44,15 +39,18 @@ export default function HomeContent() {
   }, []);
 
   const handleRoomChange = (room: Room) => {
-    setEvents(bookingData[room] || []);
+    setEvents(bookingData[room.id] || []);
   };
 
   return (
     <>
-      <Navbar onRoomChange={handleRoomChange} />
+      <Navbar />
       <div className="md:p-8 p-4">
         <Card>
           <CardContent className="p-6">
+            <div className="py-4 md:py-6 flex justify-end">
+              <SelectRoom onRoomChange={handleRoomChange} />
+            </div>
             <FullCalendar
               plugins={[dayGridPlugin, timeGridPlugin]}
               initialView="timeGridDay"

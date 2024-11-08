@@ -53,7 +53,7 @@ export default function LoginContent() {
       variant: "success",
     });
 
-    router.push("/dashboard");
+    router.push("/");
   };
 
   return (
