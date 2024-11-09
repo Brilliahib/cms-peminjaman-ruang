@@ -3,11 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import GlobalProvider from "@/components/organisms/GlobalProvider";
-import dynamic from "next/dynamic";
-
-const Navbar = dynamic(() => import("@/components/atoms/navbar/Navbar"), {
-  ssr: false,
-});
+import Navbar from "@/components/atoms/navbar/Navbar";
 
 const poppins = Poppins({
   subsets: ["latin"],
