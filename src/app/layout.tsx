@@ -3,7 +3,11 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import GlobalProvider from "@/components/organisms/GlobalProvider";
-import Navbar from "@/components/atoms/navbar/Navbar";
+import dynamic from "next/dynamic";
+
+const Navbar = dynamic(() => import("@/components/atoms/navbar/Navbar"), {
+  ssr: false,
+});
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -27,7 +31,7 @@ export default function RootLayout({
       <body className={`${poppins.variable} antialiased`}>
         <GlobalProvider>
           <main className="font-poppins">
-            {/* <Navbar /> */}
+            <Navbar />
             {children}
           </main>
           <Toaster />
