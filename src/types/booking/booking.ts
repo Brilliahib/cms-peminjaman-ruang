@@ -1,4 +1,5 @@
 import { Auth } from "../auth/auth";
+import { Mahasiswa } from "../mahasiswa/mahasiswa";
 import { Room } from "../room/room";
 
 export interface BookingRoomApproved {
@@ -9,6 +10,8 @@ export interface BookingRoomApproved {
   end_time: Date;
   name: string;
   is_approved: boolean;
+  status_surat: string;
   user: Auth;
   room: Room;
+  students: Mahasiswa[];
 }

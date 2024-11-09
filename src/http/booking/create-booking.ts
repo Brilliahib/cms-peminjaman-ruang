@@ -13,7 +13,26 @@ export const addBookingHandler = async (
   body: BookingType,
   token: string
 ): Promise<BookingResponse> => {
-  const { data } = await api.post("/booking", body, {
+  const formData = new FormData();
+
+  // Append simple fields
+  formData.append("room_id", body.room_id.toString());
+  formData.append("start_time", body.start_time);
+  formData.append("end_time", body.end_time);
+  formData.append("name", body.name);
+
+  // Append students array
+  body.students.forEach((student, index) => {
+    formData.append(`students[${index}][name]`, student.name);
+    formData.append(`students[${index}][nim]`, student.nim);
+
+    // Append file for tanda_tangan
+    if (student.tanda_tangan instanceof File) {
+      formData.append(`students[${index}][tanda_tangan]`, student.tanda_tangan);
+    }
+  });
+
+  const { data } = await api.post("/booking", formData, {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "multipart/form-data",

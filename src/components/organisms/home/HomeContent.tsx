@@ -57,10 +57,13 @@ export default function HomeContent() {
     };
   }, []);
 
-  const handleSelect = () => {
+  const handleSelect = (selectionInfo: any) => {
     if (selectedRoom) {
+      const { startStr, endStr } = selectionInfo;
       const roomId = selectedRoom.id;
-      router.push(`/bookings/${roomId}`);
+      router.push(
+        `/bookings/${roomId}?start_time=${startStr}&end_time=${endStr}`
+      );
     } else {
       alert("Pilih ruangan terlebih dahulu!");
     }

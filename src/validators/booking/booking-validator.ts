@@ -15,6 +15,18 @@ export const bookingSchema = z.object({
       message: "Format jam selesai tidak valid",
     }),
   name: z.string().min(1, { message: "Nama harus diisi" }).trim(),
+  students: z
+    .array(
+      z.object({
+        name: z.string().min(1, { message: "Nama siswa harus diisi" }).trim(),
+        nim: z.string().min(1, { message: "NIM harus diisi" }).trim(),
+        tanda_tangan: z.union([
+          z.string().min(1, { message: "Tanda tangan harus diisi" }).trim(),
+          z.instanceof(File).or(z.string()),
+        ]),
+      })
+    )
+    .min(1, { message: "Setidaknya satu siswa harus ada" }),
 });
 
 export type BookingType = z.infer<typeof bookingSchema>;

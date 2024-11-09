@@ -1,8 +1,6 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { format } from "date-fns";
-import { id } from "date-fns/locale";
 import ActionButton from "@/components/molecules/datatable/ActionButton";
 import {
   DropdownMenuItem,
@@ -10,9 +8,18 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
-import { Eye, SquarePen } from "lucide-react";
+import { Eye, SquarePen, Download } from "lucide-react";
 import { BookingRoomApproved } from "@/types/booking/booking";
 import { Badge } from "@/components/ui/badge";
+
+const handleDownload = () => {
+  const link = document.createElement("a");
+  link.href = "/Surat Peminjaman APSI.pdf";
+  link.download = "Surat Peminjaman APSI.pdf";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
 
 export const bookingColumns: ColumnDef<BookingRoomApproved>[] = [
   {
@@ -46,34 +53,46 @@ export const bookingColumns: ColumnDef<BookingRoomApproved>[] = [
       );
     },
   },
-  //   {
-  //     accessorKey: "start_time",
-  //     header: "Jam Mulai",
-  //     cell: ({ row }) => {
-  //       const data = row.original;
-  //       return (
-  //         <p suppressHydrationWarning>
-  //           {format(data.start_time, "HH:mm", {
-  //             locale: id,
-  //           })}
-  //         </p>
-  //       );
-  //     },
-  //   },
-  //   {
-  //     accessorKey: "end_time",
-  //     header: "Jam Selesai",
-  //     cell: ({ row }) => {
-  //       const data = row.original;
-  //       return (
-  //         <p suppressHydrationWarning>
-  //           {format(data.end_time, "HH:mm", {
-  //             locale: id,
-  //           })}
-  //         </p>
-  //       );
-  //     },
-  //   },
+  {
+    accessorKey: "status_surat",
+    header: "Status Surat",
+    cell: ({ row }) => {
+      const data = row.original;
+
+      return (
+        <Badge
+          variant={
+            data.status_surat === "Diajukan"
+              ? "success"
+              : data.status_surat === "Kadep"
+              ? "default"
+              : "destructive"
+          }
+        >
+          {data.status_surat === "Diajukan"
+            ? "Diajukan"
+            : data.status_surat === "Kadep"
+            ? "Kadep"
+            : "Unduh"}
+        </Badge>
+      );
+    },
+  },
+  {
+    accessorKey: "unduh_surat",
+    header: "Unduh Surat",
+    cell: () => {
+      return (
+        <button
+          onClick={handleDownload}
+          className="flex items-center text-primary hover:underline"
+        >
+          <Download className="h-4 w-4 mr-2" />
+          <span>Unduh Surat</span>
+        </button>
+      );
+    },
+  },
   {
     id: "actions",
     cell: ({ row }) => {
@@ -89,7 +108,7 @@ export const bookingColumns: ColumnDef<BookingRoomApproved>[] = [
               className="flex items-center text-gray-700"
             >
               <SquarePen className="h-4 w-4" />
-              <span className="ml-2">Edit Artikel</span>
+              <span className="ml-2">Edit</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
@@ -98,7 +117,7 @@ export const bookingColumns: ColumnDef<BookingRoomApproved>[] = [
               className="flex items-center text-gray-700"
             >
               <Eye className="h-4 w-4" />
-              <span className="ml-2">Detail Artikel</span>
+              <span className="ml-2">Detail</span>
             </Link>
           </DropdownMenuItem>
         </ActionButton>

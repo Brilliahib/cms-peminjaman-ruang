@@ -23,7 +23,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useParams, useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 
 export default function BookingFormContent() {
   const { id } = useParams();
@@ -34,8 +34,14 @@ export default function BookingFormContent() {
       start_time: "",
       end_time: "",
       room_id: Number(id),
+      students: [{ name: "", nim: "", tanda_tangan: "" }],
     },
     mode: "onChange",
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "students",
   });
 
   const { toast } = useToast();
@@ -146,6 +152,87 @@ export default function BookingFormContent() {
                           </FormItem>
                         )}
                       />
+
+                      <div className="space-y-4">
+                        <FormLabel>Data Penanggung Jawab</FormLabel>
+                        {fields.map((student, index) => (
+                          <div
+                            key={student.id}
+                            className="space-y-2 border p-4 rounded-md"
+                          >
+                            <FormField
+                              control={form.control}
+                              name={`students.${index}.name`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Nama</FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      type="text"
+                                      placeholder="Masukkan nama"
+                                      {...field}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name={`students.${index}.nim`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>NIM / NIP</FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      type="text"
+                                      placeholder="Masukkan NIM/NIP"
+                                      {...field}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name={`students.${index}.tanda_tangan`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Tanda Tangan</FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      type="file"
+                                      onChange={(e) =>
+                                        field.onChange(
+                                          e.target.files?.[0] || ""
+                                        )
+                                      }
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <Button
+                              variant="destructive"
+                              onClick={() => remove(index)}
+                            >
+                              Hapus
+                            </Button>
+                          </div>
+                        ))}
+                        <Button
+                          type="button"
+                          variant={"secondary"}
+                          onClick={() =>
+                            append({ name: "", nim: "", tanda_tangan: "" })
+                          }
+                        >
+                          Tambah
+                        </Button>
+                      </div>
+
                       <div className="flex justify-end">
                         <Button type="submit">Booking</Button>
                       </div>
