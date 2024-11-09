@@ -27,7 +27,7 @@ export default function RootLayout({
       <body className={`${poppins.variable} antialiased`}>
         <GlobalProvider>
           <main className="font-poppins">
-            <Navbar />
+            {/* <Navbar /> */}
             {children}
           </main>
           <Toaster />
