@@ -8,11 +8,15 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
-import { Eye, SquarePen, Download } from "lucide-react";
+import { Eye, SquarePen, CheckCheck } from "lucide-react";
 import { BookingRoomApproved } from "@/types/booking/booking";
 import { Badge } from "@/components/ui/badge";
 
-export const bookingAdminColumns: ColumnDef<BookingRoomApproved>[] = [
+interface BookingAdminProps extends BookingRoomApproved {
+  approveBookingHandler: (data: BookingAdminProps) => void;
+}
+
+export const bookingAdminColumns: ColumnDef<BookingAdminProps>[] = [
   {
     accessorKey: "index",
     header: "No",
@@ -78,22 +82,20 @@ export const bookingAdminColumns: ColumnDef<BookingRoomApproved>[] = [
         <ActionButton>
           <DropdownMenuLabel>Aksi</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>
-            <Link
-              href={`/dashboard/admin/article/${data.id}/edit`}
-              className="flex items-center text-gray-700"
-            >
-              <SquarePen className="h-4 w-4" />
-              <span className="ml-2">Edit</span>
-            </Link>
+          <DropdownMenuItem
+            className="text-green-500 cursor-pointer focus:text-green-700"
+            onClick={() => data.approveBookingHandler(data)}
+          >
+            <CheckCheck className="h-4 w-4 " />
+            <span className="ml-2 ">Terima Peminjaman</span>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <Link
               href={`/dashboard/admin/article/${data.id}`}
-              className="flex items-center text-gray-700"
+              className="flex items-center text-orange-700"
             >
-              <Eye className="h-4 w-4" />
-              <span className="ml-2">Detail</span>
+              <SquarePen className="h-4 w-4" />
+              <span className="ml-2">Ubah Status Surat</span>
             </Link>
           </DropdownMenuItem>
         </ActionButton>
