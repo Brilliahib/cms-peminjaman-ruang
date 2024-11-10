@@ -9,7 +9,7 @@ export default function NavL() {
     <>
       <div className="flex items-center gap-4">
         <div className="flex items-center">
-          <Link href={"/"}>
+          <Link href={"/"} className="flex items-center">
             <Image
               src={"/images/undip.png"}
               alt="Charing Cub"
