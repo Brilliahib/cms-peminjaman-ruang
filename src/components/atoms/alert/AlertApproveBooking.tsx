@@ -32,10 +32,10 @@ const ApproveBookingDialog = ({
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Terima Peminjaman?</AlertDialogTitle>
+          <AlertDialogTitle>Konfirmasi Peminjaman?</AlertDialogTitle>
           <AlertDialogDescription>
             Apakah anda yakin ingin menerima peminjaman untuk{" "}
-            <strong>{data?.name}</strong>? Data yang sudah diterima tidak dapat
+            <strong>{data?.name}</strong>? Data yang sudah disetujui tidak dapat
             dikembalikan.
           </AlertDialogDescription>
         </AlertDialogHeader>
@@ -46,7 +46,7 @@ const ApproveBookingDialog = ({
             className={buttonVariants({ variant: "default" })}
             onClick={confirmApprove}
           >
-            Terima
+            Konfirmasi
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

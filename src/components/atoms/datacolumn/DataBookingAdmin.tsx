@@ -96,7 +96,7 @@ export const bookingAdminColumns: ColumnDef<BookingAdminProps>[] = [
               onClick={() => data.approveBookingHandler(data)}
             >
               <CheckCheck className="h-4 w-4 " />
-              <span className="ml-2 ">Terima Peminjaman</span>
+              <span className="ml-2 ">Konfirmasi Peminjaman</span>
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => handleOpenDialog(data.id)}
