@@ -37,8 +37,12 @@ export default function HomeContent() {
     if (selectedRoom) {
       const { startStr, endStr } = selectionInfo;
       const roomId = selectedRoom.id;
+
+      const startTime = new Date(startStr).toISOString().split(".")[0];
+      const endTime = new Date(endStr).toISOString().split(".")[0];
+
       router.push(
-        `/bookings/${roomId}?start_time=${startStr}&end_time=${endStr}`
+        `/bookings/${roomId}?start_time=${startTime}&end_time=${endTime}`
       );
     } else {
       alert("Pilih ruangan terlebih dahulu!");

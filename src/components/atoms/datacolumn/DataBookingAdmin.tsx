@@ -18,6 +18,45 @@ interface BookingAdminProps extends BookingRoomApproved {
   approveBookingHandler: (data: BookingAdminProps) => void;
 }
 
+const ActionsCell = ({ data }: { data: BookingAdminProps }) => {
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+
+  const handleOpenDialog = (id: number) => {
+    setSelectedId(id);
+    setDialogOpen(true);
+  };
+
+  return (
+    <>
+      <ActionButton>
+        <DropdownMenuLabel>Aksi</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
+          className="text-green-500 cursor-pointer focus:text-green-700"
+          onClick={() => data.approveBookingHandler(data)}
+        >
+          <CheckCheck className="h-4 w-4 " />
+          <span className="ml-2 ">Konfirmasi Peminjaman</span>
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => handleOpenDialog(data.id)}
+          className="text-orange-500 cursor-pointer focus:text-orange-700"
+        >
+          <SquarePen className="h-4 w-4" />
+          <span className="ml-2">Ubah Status Surat</span>
+        </DropdownMenuItem>
+      </ActionButton>
+
+      <DialogChangeStatusBooking
+        open={dialogOpen}
+        setOpen={setDialogOpen}
+        id={selectedId}
+      />
+    </>
+  );
+};
+
 export const bookingAdminColumns: ColumnDef<BookingAdminProps>[] = [
   {
     accessorKey: "index",
@@ -76,44 +115,6 @@ export const bookingAdminColumns: ColumnDef<BookingAdminProps>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => {
-      const data = row.original;
-      const [dialogOpen, setDialogOpen] = useState(false);
-      const [selectedId, setSelectedId] = useState<number | null>(null);
-
-      const handleOpenDialog = (id: number) => {
-        setSelectedId(id);
-        setDialogOpen(true);
-      };
-
-      return (
-        <>
-          <ActionButton>
-            <DropdownMenuLabel>Aksi</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              className="text-green-500 cursor-pointer focus:text-green-700"
-              onClick={() => data.approveBookingHandler(data)}
-            >
-              <CheckCheck className="h-4 w-4 " />
-              <span className="ml-2 ">Konfirmasi Peminjaman</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => handleOpenDialog(data.id)}
-              className="text-orange-500 cursor-pointer focus:text-orange-700"
-            >
-              <SquarePen className="h-4 w-4" />
-              <span className="ml-2">Ubah Status Surat</span>
-            </DropdownMenuItem>
-          </ActionButton>
-
-          <DialogChangeStatusBooking
-            open={dialogOpen}
-            setOpen={setDialogOpen}
-            id={selectedId}
-          />
-        </>
-      );
-    },
+    cell: ({ row }) => <ActionsCell data={row.original} />,
   },
 ];
