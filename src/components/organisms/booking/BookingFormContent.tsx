@@ -123,7 +123,7 @@ export default function BookingFormContent() {
                             <FormLabel>Jam Mulai</FormLabel>
                             <FormControl>
                               <Input
-                                type="time"
+                                type="datetime-local"
                                 value={field.value || ""}
                                 onChange={(e) => field.onChange(e.target.value)}
                                 className="text-muted-foreground"
@@ -142,7 +142,7 @@ export default function BookingFormContent() {
                             <FormLabel>Jam Selesai</FormLabel>
                             <FormControl>
                               <Input
-                                type="time"
+                                type="datetime-local"
                                 value={field.value || ""}
                                 onChange={(e) => field.onChange(e.target.value)}
                                 className="text-muted-foreground"

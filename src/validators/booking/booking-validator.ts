@@ -4,15 +4,15 @@ export const bookingSchema = z.object({
   room_id: z.number().min(1, { message: "Room ID harus diisi" }),
   start_time: z
     .string()
-    .min(1, { message: "Jam mulai harus diisi" })
-    .regex(/^([01]?[0-9]|2[0-3]):([0-5]?[0-9])$/, {
-      message: "Format jam mulai tidak valid",
+    .min(1, { message: "Tanggal dan waktu mulai harus diisi" })
+    .regex(/^\d{4}-\d{2}-\d{2}T([01]?[0-9]|2[0-3]):([0-5]?[0-9])$/, {
+      message: "Format tanggal dan waktu mulai tidak valid",
     }),
   end_time: z
     .string()
-    .min(1, { message: "Jam selesai harus diisi" })
-    .regex(/^([01]?[0-9]|2[0-3]):([0-5]?[0-9])$/, {
-      message: "Format jam selesai tidak valid",
+    .min(1, { message: "Tanggal dan waktu selesai harus diisi" })
+    .regex(/^\d{4}-\d{2}-\d{2}T([01]?[0-9]|2[0-3]):([0-5]?[0-9])$/, {
+      message: "Format tanggal dan waktu selesai tidak valid",
     }),
   name: z.string().min(1, { message: "Nama harus diisi" }).trim(),
   students: z

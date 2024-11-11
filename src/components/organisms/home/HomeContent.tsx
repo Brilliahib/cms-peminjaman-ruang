@@ -4,15 +4,15 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import Navbar from "@/components/atoms/navbar/Navbar";
-import { Room } from "@/types/room/room";
 import { SelectRoom } from "@/components/atoms/select/SelectRoom";
 import { useGetAllBookingApproved } from "@/http/booking/get-all-booking-approved";
 import { useRouter } from "next/navigation";
+import { Room } from "@/types/room/room";
 
 interface Event {
+  id: string;
   title: string;
   start: string;
   end: string;
@@ -20,7 +20,6 @@ interface Event {
 
 export default function HomeContent() {
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
-  const [events, setEvents] = useState<Event[]>([]);
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const { data, isPending } = useGetAllBookingApproved(
     { id: selectedRoom?.id || 1 },
@@ -30,32 +29,9 @@ export default function HomeContent() {
   );
   const router = useRouter();
 
-  useEffect(() => {
-    if (!data || isPending) return;
-    const roomEvents = data.data.map((booking) => ({
-      title: booking.name,
-      start: `2024-11-07T${booking.start_time}`,
-      end: `2024-11-07T${booking.end_time}`,
-    }));
-
-    setEvents(roomEvents);
-  }, [data, isPending]);
-
   const handleRoomChange = (room: Room) => {
     setSelectedRoom(room);
   };
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => {
-      window.removeEventListener("resize", checkMobile);
-    };
-  }, []);
 
   const handleSelect = (selectionInfo: any) => {
     if (selectedRoom) {
@@ -68,6 +44,22 @@ export default function HomeContent() {
       alert("Pilih ruangan terlebih dahulu!");
     }
   };
+
+  const events: Event[] =
+    data?.data.map((booking) => {
+      const startDate = new Date(booking.start_time);
+      const endDate = new Date(booking.end_time);
+
+      return {
+        id: booking.id.toString(),
+        title: booking.name,
+        start: startDate.toISOString(),
+        end: endDate.toISOString(),
+      };
+    }) || [];
+
+  const isMobileView =
+    typeof window !== "undefined" && window.innerWidth <= 768;
 
   return (
     <>
@@ -88,7 +80,7 @@ export default function HomeContent() {
               select={handleSelect}
               dayCellClassNames={() => "cursor-pointer"}
               headerToolbar={
-                isMobile
+                isMobileView
                   ? {
                       left: "",
                       center: "title",
