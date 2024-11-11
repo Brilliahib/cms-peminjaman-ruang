@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import ActionButton from "@/components/molecules/datatable/ActionButton";
 import {
@@ -11,6 +12,7 @@ import Link from "next/link";
 import { Eye, SquarePen, CheckCheck } from "lucide-react";
 import { BookingRoomApproved } from "@/types/booking/booking";
 import { Badge } from "@/components/ui/badge";
+import DialogChangeStatusBooking from "../dialog/DialogChangeStatusBooking";
 
 interface BookingAdminProps extends BookingRoomApproved {
   approveBookingHandler: (data: BookingAdminProps) => void;
@@ -53,14 +55,13 @@ export const bookingAdminColumns: ColumnDef<BookingAdminProps>[] = [
     header: "Status Surat",
     cell: ({ row }) => {
       const data = row.original;
-
       return (
         <Badge
           variant={
             data.status_surat === "Diajukan"
               ? "success"
               : data.status_surat === "Kadep"
-              ? "default"
+              ? "success"
               : "destructive"
           }
         >
@@ -77,28 +78,41 @@ export const bookingAdminColumns: ColumnDef<BookingAdminProps>[] = [
     id: "actions",
     cell: ({ row }) => {
       const data = row.original;
+      const [dialogOpen, setDialogOpen] = useState(false);
+      const [selectedId, setSelectedId] = useState<number | null>(null);
+
+      const handleOpenDialog = (id: number) => {
+        setSelectedId(id);
+        setDialogOpen(true);
+      };
 
       return (
-        <ActionButton>
-          <DropdownMenuLabel>Aksi</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem
-            className="text-green-500 cursor-pointer focus:text-green-700"
-            onClick={() => data.approveBookingHandler(data)}
-          >
-            <CheckCheck className="h-4 w-4 " />
-            <span className="ml-2 ">Terima Peminjaman</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link
-              href={`/dashboard/admin/article/${data.id}`}
-              className="flex items-center text-orange-700"
+        <>
+          <ActionButton>
+            <DropdownMenuLabel>Aksi</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              className="text-green-500 cursor-pointer focus:text-green-700"
+              onClick={() => data.approveBookingHandler(data)}
+            >
+              <CheckCheck className="h-4 w-4 " />
+              <span className="ml-2 ">Terima Peminjaman</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => handleOpenDialog(data.id)}
+              className="text-orange-500 cursor-pointer focus:text-orange-700"
             >
               <SquarePen className="h-4 w-4" />
               <span className="ml-2">Ubah Status Surat</span>
-            </Link>
-          </DropdownMenuItem>
-        </ActionButton>
+            </DropdownMenuItem>
+          </ActionButton>
+
+          <DialogChangeStatusBooking
+            open={dialogOpen}
+            setOpen={setDialogOpen}
+            id={selectedId}
+          />
+        </>
       );
     },
   },
