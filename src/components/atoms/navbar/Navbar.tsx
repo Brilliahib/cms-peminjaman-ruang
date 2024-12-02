@@ -18,20 +18,45 @@ export default function Navbar() {
   const pathname = usePathname();
   const session = useSession();
 
+  // const links = useMemo(
+  //   () => [
+  //     {
+  //       href: "/",
+  //       label: "Beranda",
+  //       active: pathname === "/",
+  //     },
+  //     {
+  //       href: "/bookings",
+  //       label: "Persuratan",
+  //       active: pathname === "/bookings",
+  //     },
+  //     ...(session.data?.user.role === "admin"
+  //       ? [
+  //           {
+  //             href: "/admin/rooms",
+  //             label: "Rooms",
+  //             active: pathname === "/admin/rooms",
+  //           },
+  //           {
+  //             href: "/admin/bookings",
+  //             label: "Booking",
+  //             active: pathname === "/admin/bookings",
+  //           },
+  //         ]
+  //       : []),
+  //   ],
+  //   [pathname]
+  // );
+
   const links = useMemo(
     () => [
-      {
-        href: "/",
-        label: "Beranda",
-        active: pathname === "/",
-      },
-      {
-        href: "/bookings",
-        label: "Persuratan",
-        active: pathname === "/bookings",
-      },
-      ...(session.data?.user.role === "admin"
+      ...(session?.data?.user.role === "admin"
         ? [
+            {
+              href: "/",
+              label: "Beranda",
+              active: pathname === "/",
+            },
             {
               href: "/admin/rooms",
               label: "Rooms",
@@ -43,9 +68,33 @@ export default function Navbar() {
               active: pathname === "/admin/bookings",
             },
           ]
-        : []),
+        : session?.data?.user.role === "satpam"
+        ? [
+            {
+              href: "/",
+              label: "Beranda",
+              active: pathname === "/",
+            },
+            {
+              href: "/satpam/bookings",
+              label: "Booking",
+              active: pathname === "/satpam/bookings",
+            },
+          ]
+        : [
+            {
+              href: "/",
+              label: "Beranda",
+              active: pathname === "/",
+            },
+            {
+              href: "/bookings",
+              label: "Persuratan",
+              active: pathname === "/bookings",
+            },
+          ]),
     ],
-    [pathname]
+    [session, pathname]
   );
 
   return (
