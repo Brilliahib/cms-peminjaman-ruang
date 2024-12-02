@@ -81,18 +81,24 @@ export const bookingColumns: ColumnDef<BookingRoomApproved>[] = [
   {
     accessorKey: "unduh_surat",
     header: "Unduh Surat",
-    cell: () => {
-      return (
-        <button
-          onClick={handleDownload}
-          className="flex items-center text-primary hover:underline"
-        >
-          <Download className="h-4 w-4 mr-2" />
-          <span>Unduh Surat</span>
-        </button>
-      );
+    cell: ({ row }) => {
+      const data = row.original;
+
+      if (data.status_surat === "Unduh") {
+        return (
+          <button
+            onClick={handleDownload}
+            className="flex items-center text-primary hover:underline"
+          >
+            <Download className="h-4 w-4 mr-2" />
+            <span>Unduh Surat</span>
+          </button>
+        );
+      }
+      return <p className="text-muted-foreground">Belum bisa unduh</p>;
     },
   },
+
   {
     id: "actions",
     cell: ({ row }) => {
