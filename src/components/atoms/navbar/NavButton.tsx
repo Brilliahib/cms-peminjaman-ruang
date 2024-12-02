@@ -61,9 +61,6 @@ export default function NavButton({ links }: NavHeaderProps) {
             <Button variant={"outline"}>
               <Link href="/login">Masuk</Link>
             </Button>
-            <Button variant="outline">
-              <Link href="/register">Daftar</Link>
-            </Button>
           </div>
         )}
       </div>
